@@ -7,6 +7,10 @@ import joblib
 import numpy as np
 import pandas as pd
 from tensorflow.keras.models import load_model
+import os
+import pathlib
+import joblib
+
 
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(
@@ -95,15 +99,29 @@ def load_model_compat(model_path: str):
 
 @st.cache_resource
 def load_artifacts():
-    # Asegúrate de que las rutas sean correctas para tu entorno
-    model = load_model_compat("models/modelo_riesgo_credito.keras")
-    label_encoders = joblib.load("models/label_encoders.joblib")
+    # Detect the directory where app.py is actually located
+    base_path = pathlib.Path(__file__).parent.resolve()
     
+    # 1. Load Model
+    model_path = base_path / "models" / "modelo_riesgo_credito.keras"
+    model = load_model_compat(str(model_path))
+    
+    # 2. Load Label Encoders
+    encoders_path = base_path / "models" / "label_encoders.joblib"
+    label_encoders = joblib.load(str(encoders_path))
+    
+    # 3. Load PCA (checking both possible names)
     pca = None
-    for p in ["models/pca_components.joblib", "models/pca_8_componentes.joblib"]:
-        if os.path.exists(p):
-            pca = joblib.load(p)
+    pca_options = [
+        base_path / "models" / "pca_components.joblib",
+        base_path / "models" / "pca_8_componentes.joblib"
+    ]
+    
+    for p in pca_options:
+        if p.exists():
+            pca = joblib.load(str(p))
             break
+            
     return model, label_encoders, pca
 
 # --- INICIALIZACIÓN ---
