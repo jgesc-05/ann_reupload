@@ -8,11 +8,13 @@ The project consists of the following files:
 
 - **app.py**: The main Streamlit application that sets up the user interface with a title, subtitle, input sliders for credit score classification, and a button labeled "predecir" to trigger the prediction.
   
-- **models/ann_model.h5**: The trained artificial neural network model used for predicting credit scores based on the input data.
+- **models/modelo_riesgo_credito.keras**: The trained artificial neural network model used for predicting credit scores based on the input data.
   
 - **models/label_encoders.joblib**: Contains the label encoders necessary for transforming categorical input data into a format suitable for the model.
-  
-- **assets/credit_card_image_url.txt**: A text file containing the URL of a royalty-free image of an open credit card, which will be displayed in the Streamlit app.
+
+- **models/minmax_scaler.joblib**: Contains the min max scaler necessary for translating the scaled data to its original scale.
+
+- **models/pca_8_componentes.joblib**: Contains the initial 8 categories, in which where compressed the 15 features, necessary for translating the compressed data to its original size.
   
 - **requirements.txt**: Lists the dependencies required to run the Streamlit application, including Streamlit and any other necessary libraries.
 
